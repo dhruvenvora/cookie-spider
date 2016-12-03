@@ -36,15 +36,15 @@ movies : id:0, title:1, aud_rating:17
 """    
 def dataFromFiles(heading_mov, dataNumpy_mov, heading_act, dataNumpy_act, heading_dir, dataNumpy_dir, heading_gen, dataNumpy_gen, heading_rat, dataNumpy_rat): 
     #create a JSON file of likes(user, movie):        
-    with open('json/likes.json', 'w') as outfile:
-        userID_r = dataNumpy_rat[:,0].tolist()
-        movieID_r = dataNumpy_rat[:,1].tolist()
-        rating_r = dataNumpy_rat[:,2].tolist()
-        data = []
-        for i in range(len(userID_r)):
-            data.append({heading_rat[0]: userID_r[i], heading_rat[1]: movieID_r[i], heading_rat[2]: rating_r[i]})
-            
-        json.dump(data, outfile)
+    userID_r = dataNumpy_rat[:,0].tolist()
+    movieID_r = dataNumpy_rat[:,1].tolist()
+    rating_r = dataNumpy_rat[:,2].tolist()
+    outArr = []
+    for i in range(len(userID_r)):
+        data = {heading_rat[0]: userID_r[i], heading_rat[1]: movieID_r[i], heading_rat[2]: rating_r[i]}
+        outArr.append(data)
+    with open('likes.json', 'w') as outfile:
+        json.dump(outArr, outfile)
 
     #create a JSON file of likes(user, movie):        
     with open('json/movies.json', 'w') as outfile:
@@ -84,7 +84,7 @@ def dataFromFiles(heading_mov, dataNumpy_mov, heading_act, dataNumpy_act, headin
         #    print getObjectDictionary(m)
                
         json.dump(movies.values(), outfile, default=getObjectDictionary)
-      
+
         
 #if ID is in the numpy array then write the row to the file  
                         
