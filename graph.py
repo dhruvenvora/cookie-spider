@@ -16,7 +16,7 @@ class Graph:
         self.directorsCount = directorsCount
         self.genreCount = genreCount
         
-    _add_matrix(self, movies,             
+    _add_matrix(self, movies) 
     
     _calculate_affinity_between_AD(self):
         
@@ -26,4 +26,6 @@ class Graph:
         
     _calculate_affinity_between_AG(self):
         
-    
+
+    _train(self):
+        
