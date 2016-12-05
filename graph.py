@@ -70,7 +70,7 @@ class Graph:
         # affinity between actors
         self.AA = numpy.dot(numpy.dot(self.AG, self.DG.T), self.DA)
         
-        # affinity between directors
-        self.DD = numpy.dot(numpy.dot(self.DG.T, self.DA), self.AG)
+        # affinity between genres
+        self.GG = numpy.dot(numpy.dot(self.DG.T, self.DA), self.AG)
         
     
