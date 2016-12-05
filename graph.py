@@ -1,31 +1,76 @@
+import numpy as np
+from scipy.sparse import csr_matrix
+
 class Graph:
     
-    __init__(self):
+    def __init__(self, userCount, actorsCount, directorsCount, genreCount):
         #Storing weights as matrix
         self.usersCount = 0
         self.actorsCount = 0
         self.directorsCount = 0
         self.genreCount = 0
-        self.affinity_AD = []
-        self.affinity_GD = []
-        self.affinity_AG = []
+        self.UD = np.array([usersCount, directorsCount]).fill(0)
+        self.UG = np.array([usersCount, genreCount]).fill(0)
+        self.UA = np.array([usersCount, actorsCount]).fill(0)
+        self.DA = np.array([directorsCount, actorsCount]).fill(0)
+        self.DG = np.array([directorsCount, genreCount]).fill(0)
+        self.AG = np.array([actorsCount, genreCount]).fill(0)
+        self.DD = np.array([directorsCount, directorsCount]).fill(0)
+        self.GG = np.array([genreCount, genreCount]).fill(0)
+        self.AA = np.array([usersCount, actorsCount]).fill(0)
         
-    _add_count(self, usersCount, actorsCount, directorsCount, genreCount):
-        self.usersCount = usersCount
-        self.actorsCount = actorsCount
-        self.directorsCount = directorsCount
-        self.genreCount = genreCount
-        
-    _add_matrix(self, movies) 
+           
+    """
+    all lists are represented as sets
     
-    _calculate_affinity_between_AD(self):
+    dirMap = {dir -> list of movies}
+    actorMap = similar
+    genreMap = similar
+    
+    likesMap = {user -> ([all movies], [liked movies])}
+    
+    """
+    def calculateUserAffinity(self, directorMap, actorMap, genreMap, likesMap):
+        for user_id, ratedMovies in likesMap:
+            
+            for dir_id, movies in dirMap:
+                dirLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+                self.UD[user_id][dir_id] = dirLike
+                
+            for act_id, movies in actorMap:
+                actLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+                self.UA[user_id][act_id] = actLike
+                
+            for genre_id, movies in genreMap:
+                genreLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+                self.UA[user_id][genre_id] = genreLike
+    
+    """
+    Calculate affinity between DxA, DxG and AxG
+    """
+    def calculateAffinityBetweenEntities(self):
         
+        # affinity between directors and actors
+        self.DA = numpy.dot(self.UD.T, self.UA)
         
-    _calculate_affinity_between_GD(self):
+        # affinity between directors and genre
+        self.DG = numpy.dot(self.UD.T, self.UG)
         
+        # affinity between actors and genre 
+        self.AG = numpy.dot(self.UA.T, self.UG)
         
-    _calculate_affinity_between_AG(self):
+    """
+    Calculate affinity between DxD, AxA and GxG
+    """    
+    def calculateSelfAffinity(self):
         
-
-    _train(self):
+        # affinity between directors
+        self.DD = numpy.dot(numpy.dot(self.DA, self.AG), self.DG.T)
         
+        # affinity between actors
+        self.AA = numpy.dot(numpy.dot(self.AG, self.DG.T), self.DA)
+        
+        # affinity between directors
+        self.DD = numpy.dot(numpy.dot(self.DG.T, self.DA), self.AG)
+        
+    
