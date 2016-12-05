@@ -27,6 +27,16 @@ class LikesParser:
 
     def __init__(self, likeThreshold = 3):
         self._likeThreshold = likeThreshold
+        self._model = None
+        self._userMoviesDict = None
+    
+    @property
+    def model(self):
+        return self._model
+    
+    @property
+    def userMoviesDict(self):
+        return self._userMoviesDict
     
     def _parseFile(self, filepath, count = None):
         with open(filepath, 'r') as f:
@@ -66,19 +76,19 @@ class LikesParser:
         if not build:
             with open(PICKLE_FILE, 'r') as f:
                 s = f.read()
-                model = pickle.loads(s)
+                self._model = pickle.loads(s)
             print("Model loaded from pickle in %f seconds" % (time.time() - startTime))
         else:
-            model = {}
-            userMoviesDict = self._buildUserMoviesDict(filepath, count)
+            self._model = {}
+            self._userMoviesDict = self._buildUserMoviesDict(filepath, count)
             # print(userMoviesDict)
-            for (user, watchedSet, likedSet) in self._buildUserLikesTupleDict(userMoviesDict):
-                model[user] = (watchedSet, likedSet)
+            for (user, watchedSet, likedSet) in self._buildUserLikesTupleDict(self._userMoviesDict):
+                self._model[user] = (watchedSet, likedSet)
             print("Parser completed in %f seconds" % (time.time() - startTime))
-            s = pickle.dumps(model)
+            s = pickle.dumps(self._model)
             with open(PICKLE_FILE, 'w') as f:
                 f.write(s)
-        return model
+        return self._model
 
 def main():
     filepath = 'json/likes.json'
