@@ -3,7 +3,7 @@ from scipy.sparse import csr_matrix
 
 class Graph:
     
-    def __init__(self, userCount, actorsCount, directorsCount, genreCount):
+    def __init__(self, usersCount, actorsCount, directorsCount, genreCount):
         #Storing weights as matrix
         self.usersCount = 0
         self.actorsCount = 0
@@ -30,19 +30,19 @@ class Graph:
     likesMap = {user -> ([all movies], [liked movies])}
     
     """
-    def calculateUserAffinity(self, directorMap, actorMap, genreMap, likesMap):
-        for user_id, ratedMovies in likesMap:
+    def calculateUserAffinity(self, dirMap, actorMap, genreMap, likesMap):
+        for user_id, ratedMovies in likesMap.items():
             
-            for dir_id, movies in dirMap:
-                dirLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+            for dir_id, movies in dirMap.items():
+                dirLike = len(movies.intersection(ratedMovies[1])) / (len(movies.intersection(ratedMovies[0]))+1)
                 self.UD[user_id][dir_id] = dirLike
                 
-            for act_id, movies in actorMap:
-                actLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+            for act_id, movies in actorMap.items():
+                actLike = len(movies.intersection(ratedMovies[1])) / (len(movies.intersection(ratedMovies[0]))+1)
                 self.UA[user_id][act_id] = actLike
                 
-            for genre_id, movies in genreMap:
-                genreLike = len(movies.intersection(ratedMovies[1])) / len(movies.intersection(ratedMovies[0]))
+            for genre_id, movies in genreMap.items():
+                genreLike = len(movies.intersection(ratedMovies[1])) / (len(movies.intersection(ratedMovies[0]))+1)
                 self.UA[user_id][genre_id] = genreLike
     
     """

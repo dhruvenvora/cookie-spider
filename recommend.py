@@ -7,19 +7,25 @@ class Recommender:
     def recommend(self, graph, likesModel, moviesModel, user):
         (watchedMovies, likedMovies) = likesModel[user]
         
+        favDirs = []
+        favActs = []
+        favGens = []
+        
+        recommendedMovies = heap(10)
+        
         for movie in likedMovies:
             movieDetails = moviesModel.movieMap[movie]
-            directors = movieDetails.directors
-            actors = movieDetails.actors
-            genres = movieDetails.genres
+            favDirs.append(movieDetails.directors)
+            favActs.append(movieDetails.actors)
+            favGens.append(movieDetails.genres)
+            
+        favs = [favDirs, favActs, favGens]    
 
-            md = []
-            ad = []
-            gd = []
-
-            for d in directors:
-                md = h_dfs(d)
-            for a in actors:
-                ad = h_dfs(a)
-            for g in genres:
-                gd = h_dfs(g)
+        while i in range(MAX_LEVEL):
+    
+            favs = graph.getKHighestAffinityValues(favs)
+            
+            
+            
+            
+                

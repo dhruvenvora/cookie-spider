@@ -17,6 +17,8 @@ class MoviesParser:
     #method that checks if ID of dict contains directors: if not, create one dict with dir as ID and movieID as value                                
     def updateDictOfDirectors(self, movieObject):
         director = movieObject['director']
+        if(len(director) < 1):
+            director = "NA"
         if director not in self.dictDirector:
             self.dictDirector[director] = set()
         self.dictDirector[director].add(self.returnMovieID(movieObject))
