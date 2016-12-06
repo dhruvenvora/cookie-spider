@@ -37,6 +37,24 @@ class LikesParser:
     @property
     def userMoviesDict(self):
         return self._userMoviesDict
+
+    def _parseFileMod(self, filepath, count = None):
+        maxRating = 0
+        with open(filepath, 'r') as f:
+            fileStr = f.read()
+            fileJsonArr = json.loads(fileStr)
+            idx = 0
+            for jsonObj in fileJsonArr:
+                userMovieRel = UserMovieRel(jsonObj['userID'], jsonObj['movieID'], jsonObj['rating'])
+                if userMovieRel.rating > maxRating:
+                    maxRating = userMovieRel.rating
+                yield userMovieRel
+                idx += 1
+                if count:
+                    if idx >= count:
+                        break
+            print("Parsed %d likes" % idx)
+            print("MaxRating: %f" % maxRating)
     
     def _parseFile(self, filepath, count = None):
         with open(filepath, 'r') as f:
@@ -55,7 +73,7 @@ class LikesParser:
 
     def _buildUserMoviesDict(self, filepath, count = None):
         retDict = {}
-        for userMovieRel in self._parseFile(filepath, count):
+        for userMovieRel in self._parseFileMod(filepath, count):
             if userMovieRel.user not in retDict:
                 retDict[userMovieRel.user] = []
             retDict[userMovieRel.user].append(userMovieRel)
