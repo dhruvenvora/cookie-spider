@@ -74,9 +74,10 @@ class LikesParser:
     def _buildUserMoviesDict(self, filepath, count = None):
         retDict = {}
         for userMovieRel in self._parseFileMod(filepath, count):
-            if userMovieRel.user not in retDict:
-                retDict[userMovieRel.user] = []
-            retDict[userMovieRel.user].append(userMovieRel)
+            if userMovieRel.user:
+                if userMovieRel.user not in retDict:
+                    retDict[userMovieRel.user] = []
+                retDict[userMovieRel.user].append(userMovieRel)
         return retDict
 
     def _buildUserLikesTupleDict(self, userMoviesDict):

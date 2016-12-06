@@ -17,26 +17,27 @@ class MoviesParser:
     #method that checks if ID of dict contains directors: if not, create one dict with dir as ID and movieID as value                                
     def updateDictOfDirectors(self, movieObject):
         director = movieObject['director']
-        if(len(director) < 1):
-            director = "NA"
-        if director not in self.dictDirector:
-            self.dictDirector[director] = set()
-        self.dictDirector[director].add(self.returnMovieID(movieObject))
+        if director:
+            if director not in self.dictDirector:
+                self.dictDirector[director] = set()
+            self.dictDirector[director].add(self.returnMovieID(movieObject))
         
     #method that checks if ID of dict contains actors: if not, create one dict with actor as ID and set of movieIDs as value    
     def updateDictOfActors(self, movieObject):
         listOfActors = movieObject['actors']
         for actor in listOfActors:
-            if actor not in self.dictActor:
-                self.dictActor[actor] = set()
-            self.dictActor[actor].add(self.returnMovieID(movieObject))
+            if actor:
+                if actor not in self.dictActor:
+                    self.dictActor[actor] = set()
+                self.dictActor[actor].add(self.returnMovieID(movieObject))
         
     #method that checks if ID of dict contains genres: if not, create one dict with genre as ID and set of movieIDs as value        
     def updateDictOfGeneres(self, movieObject):
         genre = movieObject['genre']
-        if genre not in self.dictGenre:
-            self.dictGenre[genre] = set()  
-        self.dictGenre[genre].add(self.returnMovieID(movieObject))
+        if genre:
+            if genre not in self.dictGenre:
+                self.dictGenre[genre] = set()  
+            self.dictGenre[genre].add(self.returnMovieID(movieObject))
 
     def parseMoviesObjects(self, filename,  parse = True):
         start_time = time.time()
@@ -45,9 +46,10 @@ class MoviesParser:
             jsonData = json.loads(json_data) 
                                   
             for movieObject in jsonData: 
-                self.updateDictOfDirectors(movieObject)
-                self.updateDictOfActors(movieObject)
-                self.updateDictOfGeneres(movieObject)
+                if self.returnMovieID(movieObject):
+                    self.updateDictOfDirectors(movieObject)
+                    self.updateDictOfActors(movieObject)
+                    self.updateDictOfGeneres(movieObject)
             print("Parsed movies.json in %f seconds" % (time.time() - start_time))
             s = pickle.dumps(self)
             with open(MOVIES_PICKLE_FILE, 'w') as f:

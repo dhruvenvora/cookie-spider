@@ -5,19 +5,20 @@ class Graph:
     
     def __init__(self, usersCount, actorsCount, directorsCount, genreCount):
         #Storing weights as matrix
-        self.usersCount = 0
-        self.actorsCount = 0
-        self.directorsCount = 0
-        self.genreCount = 0
-        self.UD = np.array([usersCount, directorsCount]).fill(0)
-        self.UG = np.array([usersCount, genreCount]).fill(0)
-        self.UA = np.array([usersCount, actorsCount]).fill(0)
-        self.DA = np.array([directorsCount, actorsCount]).fill(0)
-        self.DG = np.array([directorsCount, genreCount]).fill(0)
-        self.AG = np.array([actorsCount, genreCount]).fill(0)
-        self.DD = np.array([directorsCount, directorsCount]).fill(0)
-        self.GG = np.array([genreCount, genreCount]).fill(0)
-        self.AA = np.array([usersCount, actorsCount]).fill(0)
+        self.usersCount = usersCount
+        self.actorsCount = actorsCount
+        self.directorsCount = directorsCount
+        self.genreCount = genreCount
+        self.UD = np.ndarray((usersCount, directorsCount))
+        # self.UD.fill(0)
+        self.UG = np.ndarray((usersCount, genreCount))
+        self.UA = np.ndarray((usersCount, actorsCount))
+        self.DA = np.ndarray((directorsCount, actorsCount))
+        self.DG = np.ndarray((directorsCount, genreCount))
+        self.AG = np.ndarray((actorsCount, genreCount))
+        self.DD = np.ndarray((directorsCount, directorsCount))
+        self.GG = np.ndarray((genreCount, genreCount))
+        self.AA = np.ndarray((usersCount, actorsCount))
         
            
     """
@@ -34,7 +35,9 @@ class Graph:
         for user_id, ratedMovies in likesMap.items():
             
             for dir_id, movies in dirMap.items():
-                dirLike = len(movies.intersection(ratedMovies[1])) / (len(movies.intersection(ratedMovies[0]))+1)
+                dirLike = len(movies.intersection(ratedMovies[1])) / float(len(movies.intersection(ratedMovies[0]))+1)
+                print("%s:%s  = %f" %(user_id, dir_id, dirLike))
+                print(self.UD)
                 self.UD[user_id][dir_id] = dirLike
                 
             for act_id, movies in actorMap.items():
