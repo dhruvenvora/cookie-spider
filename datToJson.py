@@ -5,13 +5,7 @@ from objects import *
 import codecs
 
 
-def make_student(ID, age, major):
-    movie = Movie(ID, age, major)
-    return movie
-
-
-
-#this function returns the 
+#this function returns the column name using the header variable and the values using the dataNumpy variable
 def read_data(filename):
     newLines = []
     with open(filename, 'r') as input_file: 
@@ -43,7 +37,7 @@ def dataFromFiles(heading_mov, dataNumpy_mov, heading_act, dataNumpy_act, headin
     for i in range(len(userID_r)):
         data = {heading_rat[0]: userID_r[i], heading_rat[1]: movieID_r[i], heading_rat[2]: rating_r[i]}
         outArr.append(data)
-    with open('likes.json', 'w') as outfile:
+    with open('json/likes.json', 'w') as outfile:
         json.dump(outArr, outfile)
 
     #create a JSON file of likes(user, movie):        
@@ -85,20 +79,7 @@ def dataFromFiles(heading_mov, dataNumpy_mov, heading_act, dataNumpy_act, headin
                
         json.dump(movies.values(), outfile, default=getObjectDictionary)
 
-        
-#if ID is in the numpy array then write the row to the file  
-                        
-#function to write the entire data to a csv file
-def writeDataToCSV(csvFile, data):
-    csvReviewFile = open(csvFile, 'a+')
-    csvFileWriter = csv.writer(csvReviewFile)
-    csvFileWriter.writerow(data)
-    print "bye"    
-       
-#aList = [1,2,3]        
-#writeDataToCSV("data.csv", aList)
-                                                              
-    
+   
 ########################################################################################################    
     
 if __name__=="__main__":

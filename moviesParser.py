@@ -4,7 +4,7 @@ import time
 
 MOVIES_PICKLE_FILE = 'movies.model'
 
-class Movies:
+class MoviesParser:
 
     def __init__(self):
         self.dictDirector = {} # {director : [movieID]}
@@ -39,7 +39,7 @@ class Movies:
     def parseMoviesObjects(self, filename,  parse = True):
         start_time = time.time()
         if parse:
-            json_data =  open(moviesJson, 'r').read() 
+            json_data =  open(filename, 'r').read() 
             jsonData = json.loads(json_data) 
                                   
             for movieObject in jsonData: 
@@ -63,8 +63,8 @@ class Movies:
 
 #main function to parse a json file of movies:
 def main(moviesJson):  
-    mov = Movies()
-    mov.parseMoviesObjects(moviesJson, parse = False)
+    mov = MoviesParser()
+    mov.parseMoviesObjects(moviesJson, parse = True)
     print(len(mov.dictActor))
     print(len(mov.dictDirector))
     print(len(mov.dictGenre))

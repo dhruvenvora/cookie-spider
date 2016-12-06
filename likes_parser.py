@@ -111,7 +111,7 @@ class LikesParser:
 def main():
     filepath = 'json/likes.json'
     parser = LikesParser(3)
-    userDict = parser.getUserDict(filepath, build = False, count = None)
+    userDict = parser.getUserDict(filepath, build = True, count = None)
     likeProbs = []
     for user, items in userDict.items():
         print("%s: %d->%d" % (user, len(items[0]), len(items[1])))

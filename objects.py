@@ -27,7 +27,7 @@ class Actor:
         self.worked_in = []
     
     def add_worked_in(self, movie):
-        worked_in.append(movie)
+        self.worked_in.append(movie)
         
 class Director:
     
