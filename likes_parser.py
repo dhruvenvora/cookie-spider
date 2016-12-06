@@ -66,7 +66,7 @@ class LikesParser:
             watchedSet = set()
             likedSet = set()
             for userMovieRel in moviesList:
-                if userMovieRel.rating > self._likeThreshold:
+                if userMovieRel.rating >= self._likeThreshold:
                     likedSet.add(userMovieRel.movie)
                 watchedSet.add(userMovieRel.movie)
             yield (user, watchedSet, likedSet)
