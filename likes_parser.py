@@ -25,11 +25,12 @@ class UserMovieRel:
     
 class LikesParser:
 
-    def __init__(self, likeThreshold = 3):
+    def __init__(self, indexProvider, likeThreshold = 3):
         self._likeThreshold = likeThreshold
         self._model = None
         self._userMoviesDict = None
-    
+        self._indexProvider = indexProvider
+
     @property
     def model(self):
         return self._model
@@ -45,7 +46,8 @@ class LikesParser:
             fileJsonArr = json.loads(fileStr)
             idx = 0
             for jsonObj in fileJsonArr:
-                userMovieRel = UserMovieRel(jsonObj['userID'], jsonObj['movieID'], jsonObj['rating'])
+                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(jsonObj['userID']), 
+                    self._indexProvider.getEntityIndex(jsonObj['movieID']), self._indexProvider.getEntityIndex(jsonObj['rating']))
                 if userMovieRel.rating > maxRating:
                     maxRating = userMovieRel.rating
                 yield userMovieRel
@@ -62,7 +64,8 @@ class LikesParser:
             fileJsonArr = json.loads(fileStr)
             idx = 0
             for jsonObj in fileJsonArr:
-                userMovieRel = UserMovieRel(jsonObj['userID'], jsonObj['movieID'], jsonObj['rating'])
+                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(jsonObj['userID']), 
+                    self._indexProvider.getEntityIndex(jsonObj['movieID']), self._indexProvider.getEntityIndex(jsonObj['rating']))
                 yield userMovieRel
                 idx += 1
                 if count:

@@ -6,18 +6,21 @@ MOVIES_PICKLE_FILE = 'movies.model'
 
 class MoviesParser:
 
-    def __init__(self):
+    def __init__(self, indexProvider):
         self.dictDirector = {} # {director : [movieID]}
         self.dictActor = {} # {actor : [movieID]}
         self.dictGenre = {} # {genre : [movieID]}
-    
+        self._indexProvider = indexProvider
+
     def returnMovieID(self, movieObject):
-         return movieObject['movie_id']
+        ret = self._indexProvider.getEntityIndex(movieObject['movie_id'])
+        return ret
 
     #method that checks if ID of dict contains directors: if not, create one dict with dir as ID and movieID as value                                
     def updateDictOfDirectors(self, movieObject):
         director = movieObject['director']
         if director:
+            director = self._indexProvider.getEntityIndex(director)
             if director not in self.dictDirector:
                 self.dictDirector[director] = set()
             self.dictDirector[director].add(self.returnMovieID(movieObject))
@@ -27,6 +30,7 @@ class MoviesParser:
         listOfActors = movieObject['actors']
         for actor in listOfActors:
             if actor:
+                actor = self._indexProvider.getEntityIndex(actor)
                 if actor not in self.dictActor:
                     self.dictActor[actor] = set()
                 self.dictActor[actor].add(self.returnMovieID(movieObject))
@@ -35,6 +39,7 @@ class MoviesParser:
     def updateDictOfGeneres(self, movieObject):
         genre = movieObject['genre']
         if genre:
+            genre = self._indexProvider.getEntityIndex(genre)
             if genre not in self.dictGenre:
                 self.dictGenre[genre] = set()  
             self.dictGenre[genre].add(self.returnMovieID(movieObject))
