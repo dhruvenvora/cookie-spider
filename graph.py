@@ -36,8 +36,6 @@ class Graph:
             
             for dir_id, movies in dirMap.items():
                 dirLike = len(movies.intersection(ratedMovies[1])) / float(len(movies.intersection(ratedMovies[0]))+1)
-                print("%s:%s  = %f" %(user_id, dir_id, dirLike))
-                print(self.UD)
                 self.UD[user_id][dir_id] = dirLike
                 
             for act_id, movies in actorMap.items():

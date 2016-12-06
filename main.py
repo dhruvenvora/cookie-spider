@@ -1,7 +1,7 @@
 from likes_parser import LikesParser
 from moviesParser import MoviesParser
 from graph import Graph
-from entity_index import EntityIndex
+from entity_index import ChannelIndex, Channels
 
 def creatingTrainingData(likesMap):
     #print likesMap
@@ -10,13 +10,13 @@ def creatingTrainingData(likesMap):
 
 
 def main(likesJson, moviesJson):
-    entityIndex = EntityIndex()
-    likesParser = LikesParser(entityIndex, likeThreshold=3) #out of 5
+    channelIndex = ChannelIndex(Channels.CHANNELS)
+    likesParser = LikesParser(channelIndex, likeThreshold=3) #out of 5
     likesMap = likesParser.getUserDict(likesJson, build = True, count = None)
     
     creatingTrainingData(likesMap)
     
-    moviesParser = MoviesParser(entityIndex)
+    moviesParser = MoviesParser(channelIndex)
     moviesParser.parseMoviesObjects(moviesJson, parse = True)
 
     userCount = len(likesMap)

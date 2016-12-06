@@ -23,3 +23,26 @@ class EntityIndex:
         if entityIndex in self._reverseIndex:
             ret = self._reverseIndex[entityIndex]
         return ret
+
+class ChannelIndex:
+
+    def __init__(self, channels):
+        self._channelIndices = {}
+        for c in channels:
+            self._channelIndices[c] = EntityIndex()
+
+    def getEntityIndex(self, channel, name):
+        index = self._channelIndices[channel]
+        return index.getEntityIndex(name)
+
+    def getEntityByIndex(self, channel, entityIndex):
+        index = self._channelIndices[channel]
+        return index.getEntityByIndex(entityIndex)
+
+class Channels:
+    DIRECTOR = 'director'
+    USER = 'user'
+    MOVIE = 'movie'
+    ACTOR = 'actor'
+    GENRE = 'genre'
+    CHANNELS = [DIRECTOR, USER, MOVIE, ACTOR, GENRE]

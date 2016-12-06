@@ -1,6 +1,7 @@
 import json
 import pickle
 import time
+from entity_index import Channels
 
 PICKLE_FILE = 'likes.model'
 
@@ -46,8 +47,9 @@ class LikesParser:
             fileJsonArr = json.loads(fileStr)
             idx = 0
             for jsonObj in fileJsonArr:
-                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(jsonObj['userID']), 
-                    self._indexProvider.getEntityIndex(jsonObj['movieID']), self._indexProvider.getEntityIndex(jsonObj['rating']))
+                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(Channels.USER, jsonObj['userID']), 
+                    self._indexProvider.getEntityIndex(Channels.MOVIE, jsonObj['movieID']), 
+                    jsonObj['rating'])
                 if userMovieRel.rating > maxRating:
                     maxRating = userMovieRel.rating
                 yield userMovieRel
@@ -64,8 +66,9 @@ class LikesParser:
             fileJsonArr = json.loads(fileStr)
             idx = 0
             for jsonObj in fileJsonArr:
-                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(jsonObj['userID']), 
-                    self._indexProvider.getEntityIndex(jsonObj['movieID']), self._indexProvider.getEntityIndex(jsonObj['rating']))
+                userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(Channels.USER, jsonObj['userID']), 
+                    self._indexProvider.getEntityIndex(Channels.MOVIE, jsonObj['movieID']), 
+                    jsonObj['rating'])
                 yield userMovieRel
                 idx += 1
                 if count:
