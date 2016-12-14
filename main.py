@@ -25,7 +25,15 @@ def main(likesJson, moviesJson):
     genreCount = len(moviesParser.dictGenre)
     print("%d,%d,%d,%d" % (userCount, actorsCount, directorsCount, genreCount))
     graph = Graph(userCount, actorsCount, directorsCount, genreCount)
+    
+    print "Calculating user affinities"
     graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
+    
+    print "Calculating affinites between entities"
+    graph.calculateAffinityBetweenEntities()
+    
+    print "Calculating self affinity"
+    graph.calculateSelfAffinity()
 
 
 
