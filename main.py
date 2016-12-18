@@ -8,8 +8,12 @@ def creatingTrainingData(likesMap):
     print "Exit"
 
 
+moviesParser = None
+likesMap = None
 
 def main(likesJson, moviesJson):
+    global moviesParser
+    global likesMap
     channelIndex = ChannelIndex(Channels.CHANNELS)
     likesParser = LikesParser(channelIndex, likeThreshold=3) #out of 5
     likesMap = likesParser.getUserDict(likesJson, build = True, count = None)
@@ -24,8 +28,8 @@ def main(likesJson, moviesJson):
     directorsCount = len(moviesParser.dictDirector)
     genreCount = len(moviesParser.dictGenre)
     print("%d,%d,%d,%d" % (userCount, actorsCount, directorsCount, genreCount))
-    graph = Graph(userCount, actorsCount, directorsCount, genreCount)
-    graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
+    # graph = Graph(userCount, actorsCount, directorsCount, genreCount)
+    # graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
 
 
 

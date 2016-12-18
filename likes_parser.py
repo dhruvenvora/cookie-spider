@@ -1,7 +1,7 @@
 import json
 import pickle
 import time
-from entity_index import Channels
+from entity_index import ChannelIndex, Channels
 
 PICKLE_FILE = 'likes.model'
 
@@ -23,13 +23,16 @@ class UserMovieRel:
     @property
     def rating(self):
         return self._rating
-    
+
+'''
+    userID: [UserMovieRel(userID, movieID, rating)]
+'''
 class LikesParser:
 
     def __init__(self, indexProvider, likeThreshold = 3):
         self._likeThreshold = likeThreshold
-        self._model = None
-        self._userMoviesDict = None
+        self._model = None # userID: ([watched movieID], [liked movieID])
+        self._userMoviesDict = None # userID: [movieObject]
         self._indexProvider = indexProvider
 
     @property
@@ -117,7 +120,8 @@ class LikesParser:
 
 def main():
     filepath = 'json/likes.json'
-    parser = LikesParser(3)
+    channelIndex = ChannelIndex(Channels.CHANNELS)
+    parser = LikesParser(channelIndex, 3)
     userDict = parser.getUserDict(filepath, build = True, count = None)
     likeProbs = []
     for user, items in userDict.items():
