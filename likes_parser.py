@@ -53,6 +53,7 @@ class LikesParser:
                 userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(Channels.USER, jsonObj['userID']), 
                     self._indexProvider.getEntityIndex(Channels.MOVIE, jsonObj['movieID']), 
                     jsonObj['rating'])
+                                    
                 if userMovieRel.rating > maxRating:
                     maxRating = userMovieRel.rating
                 yield userMovieRel
@@ -72,6 +73,7 @@ class LikesParser:
                 userMovieRel = UserMovieRel(self._indexProvider.getEntityIndex(Channels.USER, jsonObj['userID']), 
                     self._indexProvider.getEntityIndex(Channels.MOVIE, jsonObj['movieID']), 
                     jsonObj['rating'])
+                                
                 yield userMovieRel
                 idx += 1
                 if count:
@@ -83,10 +85,11 @@ class LikesParser:
     def _buildUserMoviesDict(self, filepath, count = None):
         retDict = {}
         for userMovieRel in self._parseFileMod(filepath, count):
-            if userMovieRel.user:
+            if userMovieRel.user != None:
                 if userMovieRel.user not in retDict:
                     retDict[userMovieRel.user] = []
                 retDict[userMovieRel.user].append(userMovieRel)
+        
         return retDict
 
     def _buildUserLikesTupleDict(self, userMoviesDict):

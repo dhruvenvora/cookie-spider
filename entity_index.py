@@ -11,9 +11,9 @@ class EntityIndex:
         if name:
             if name not in self._index:
                 entityIndex = self._indexCounter
-                self._indexCounter += 1
                 self._index[name] = entityIndex
                 self._reverseIndex[entityIndex] = name
+                self._indexCounter += 1
             else:
                 entityIndex = self._index[name]
         return entityIndex
