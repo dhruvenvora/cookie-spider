@@ -1,3 +1,4 @@
+import itertools
 
 class Recommender:
 
@@ -7,6 +8,9 @@ class Recommender:
     def recommend(self, graph, likesModel, moviesModel, user):
         (watchedMovies, likedMovies) = likesModel[user]
         
+        print likedMovies
+        
+        """
         favDirs = []
         favActs = []
         favGens = []
@@ -19,13 +23,16 @@ class Recommender:
             favActs.append(movieDetails.actors)
             favGens.append(movieDetails.genres)
             
-        favs = [favDirs, favActs, favGens]    
-
-        while i in range(MAX_LEVEL):
-    
-            favs = graph.getKHighestAffinityValues(favs)
+        favs = [favDirs, favActs, favGens]  
+        
+        findAllCombinations(favDirs, favActs, favGens)  
+        """
+        #while i in range(MAX_LEVEL):
+        #    favs = graph.getKHighestAffinityValues(favs)
             
-            
+    def findAllCombinations(favDirs, favActs, favGens):
+        for i in itertools.product(favDirs, favActs, favGens):
+            print i
             
             
                 
