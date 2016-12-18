@@ -38,6 +38,7 @@ def main(likesJson, moviesJson, fromFile):
         graph.DD = graph.readFile("model/dd.h5")
         graph.AA = graph.readFile("model/aa.h5")
         graph.GG = graph.readFile("model/gg.h5")
+        
     else:
         print "Calculating user affinities"
         graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
@@ -50,10 +51,9 @@ def main(likesJson, moviesJson, fromFile):
         print "Calculating self affinity"
         graph.calculateSelfAffinity()
     
-    rec = Recommender()
+    rec = Recommender(graph)
     
-    rec.recommend(graph, likesMap, moviesParser, 1)
-
+    rec.recommend(likesMap, moviesParser, 1)
 
 
 if __name__ == "__main__":
