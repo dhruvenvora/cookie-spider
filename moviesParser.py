@@ -1,16 +1,23 @@
 import json
 import pickle
 import time
-from entity_index import Channels
+from entity_index import ChannelIndex, Channels
 
 MOVIES_PICKLE_FILE = 'movies.model'
 
+'''
+        {director : [movieID]}
+        {actor : [movieID]}
+        {genre : [movieID]}
+        {movieID: movieObject{"rating": str, "movie_id": "60141", "name": str, "director": str, "actors": [], "genre": str}}
+'''
 class MoviesParser:
 
     def __init__(self, indexProvider):
         self.dictDirector = {} # {director : [movieID]}
         self.dictActor = {} # {actor : [movieID]}
         self.dictGenre = {} # {genre : [movieID]}
+        self.movies = {} # movieID: movieObject
         self._indexProvider = indexProvider
 
     def returnMovieID(self, movieObject):
@@ -53,6 +60,7 @@ class MoviesParser:
                                   
             for movieObject in jsonData: 
                 if self.returnMovieID(movieObject):
+                    self.movies[self.returnMovieID(movieObject)] = movieObject
                     self.updateDictOfDirectors(movieObject)
                     self.updateDictOfActors(movieObject)
                     self.updateDictOfGeneres(movieObject)
@@ -70,10 +78,10 @@ class MoviesParser:
             print("Loaded pickled movies model in %f seconds" % (time.time() - start_time))
         return self
 
-
 #main function to parse a json file of movies:
 def main(moviesJson):  
-    mov = MoviesParser()
+    channelIndex = ChannelIndex(Channels.CHANNELS)
+    mov = MoviesParser(channelIndex)
     mov.parseMoviesObjects(moviesJson, parse = True)
     print(len(mov.dictActor))
     print(len(mov.dictDirector))
