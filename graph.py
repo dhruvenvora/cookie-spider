@@ -45,9 +45,9 @@ class Graph:
                 genreLike = len(movies.intersection(ratedMovies[1])) / float(len(movies.intersection(ratedMovies[0]))+1)
                 self.UG[user_id][genre_id] = genreLike
                 
-        #self.writeFile("model/ud.h5", self.UD)
-        #self.writeFile("model/ua.h5", self.UA)
-        #self.writeFile("model/ug.h5", self.UG)
+        self.writeFile("model/ud.h5", self.UD)
+        self.writeFile("model/ua.h5", self.UA)
+        self.writeFile("model/ug.h5", self.UG)
         
     
     """
@@ -61,15 +61,15 @@ class Graph:
         
         # affinity between directors and actors
         self.DA = np.dot(self.UD.T, self.UA)
-        #self.writeFile("model/da.h5", self.DA)
+        self.writeFile("model/da.h5", self.DA)
         
         # affinity between directors and genre
         self.DG = np.dot(self.UD.T, self.UG)
-        #self.writeFile("model/dg.h5", self.DG)
+        self.writeFile("model/dg.h5", self.DG)
         
         # affinity between actors and genre 
         self.AG = np.dot(self.UA.T, self.UG)
-        #self.writeFile("model/ag.h5", self.AG)
+        self.writeFile("model/ag.h5", self.AG)
         
     """
     Calculate affinity between DxD, AxA and GxG
@@ -83,17 +83,17 @@ class Graph:
         print "Self affinity of DD"
         # affinity between directors
         self.DD = np.dot(np.dot(self.DA, self.AG), self.DG.T)
-        #self.writeFile("model/dd.h5", self.DD)
+        self.writeFile("model/dd.h5", self.DD)
         
         print "Self affinity of AA"
         # affinity between actors
         self.AA = np.dot(np.dot(self.AG, self.DG.T), self.DA)
-        #self.writeFile("model/aa.h5", self.AA)
+        self.writeFile("model/aa.h5", self.AA)
         
         print "Self affinity of GG"
         # affinity between genres
         self.GG = np.dot(np.dot(self.DG.T, self.DA), self.AG)
-        #self.writeFile("model/gg.h5", self.GG)
+        self.writeFile("model/gg.h5", self.GG)
         
     def writeFile(self, filename, obj):
         with h5py.File(filename, 'w') as hf:

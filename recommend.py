@@ -53,27 +53,23 @@ class Recommender:
             score += self.graph.DG[i[0]][i[2]]
             score += self.graph.AG[i[1]][i[2]]
             
-            dMovies = self.moviesModel.dictDirector[i[0]]
-            aMovies = self.moviesModel.dictActor[i[1]]
-            gMovies = self.moviesModel.dictGenre[i[2]]
+            dMovies = list(self.moviesModel.dictDirector[i[0]])
+            aMovies = list(self.moviesModel.dictActor[i[1]])
+            gMovies = list(self.moviesModel.dictGenre[i[2]])
             
-            print dMovies
-            print aMovies
+            potentialMovies = np.intersect1d(dMovies, aMovies)
             
-            potentialMovies = reduce(np.intersect1d, (dMovies, aMovies))
-            
-            potentialMovies = np.setdiff1d(potentialMovies, watchedMovies)
+            potentialMovies = set(np.setdiff1d(potentialMovies, watchedMovies))
             
             for i in potentialMovies:
-                print "add ", i
-                if(count > 10):
+                if(count > 20):
                     heapq.heappushpop(movies, PotentialMovie(i, score))
                 else:
                     heapq.heappush(movies, PotentialMovie(i, score))
+                    count += 1
                     
-            break
-                    
-        print movies
+        for obj in movies:
+            print obj.movie
                 
             
             

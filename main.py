@@ -5,19 +5,11 @@ from entity_index import ChannelIndex, Channels
 import gc
 from recommend import Recommender
 
-def creatingTrainingData(likesMap):
-    #print likesMap
-    print "Exit"
-
-
-
 def main(likesJson, moviesJson, fromFile):
     channelIndex = ChannelIndex(Channels.CHANNELS)
     likesParser = LikesParser(channelIndex, likeThreshold=3) #out of 5
     likesMap = likesParser.getUserDict(likesJson, build = True, count = None)
-    
-    creatingTrainingData(likesMap)
-    
+        
     moviesParser = MoviesParser(channelIndex)
     moviesParser.parseMoviesObjects(moviesJson, parse = True)
 
@@ -53,8 +45,8 @@ def main(likesJson, moviesJson, fromFile):
     
     rec = Recommender(graph)
     
-    rec.recommend(likesMap, moviesParser, 1)
+    rec.recommend(likesMap, moviesParser, userCount-1)
 
 
 if __name__ == "__main__":
-    main('json/likes.json', 'json/movies.json', True)
+    main('json/likes.json', 'json/movies.json', False)
