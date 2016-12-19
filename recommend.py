@@ -12,6 +12,9 @@ class PotentialMovie:
     def __cmp__(self, other):
         return cmp(self.score, other.score) 
 
+    def __str__(self):
+        return "%s: %f" % (self.movie, self.score)
+
 class Recommender:
     
     graph = None
@@ -35,7 +38,7 @@ class Recommender:
         favDir = allDirs.argsort()[-30:][::-1]
         favGen = allGens.argsort()[-30:][::-1]
         
-        self.findRecommendedMovies(favDir, favAct, favGen, watchedMovies)  
+        return self.findRecommendedMovies(favDir, favAct, favGen, watchedMovies)  
         
         #while i in range(MAX_LEVEL):
         #    favs = graph.getKHighestAffinityValues(favs)
@@ -67,13 +70,14 @@ class Recommender:
             for i in potentialMovies:
                 print "add ", i
                 if(count > 10):
-                    heapq.heappushpop(movies, PotentialMovie(i, score))
+                    heapq.heappushpop(movies, PotentialMovie(i.pop(), score))
                 else:
-                    heapq.heappush(movies, PotentialMovie(i, score))
+                    heapq.heappush(movies, PotentialMovie(i.pop(), score))
+                    count += 1
                     
-            break
+            # break
                     
-        print movies
+        return movies
                 
             
             

@@ -2,6 +2,7 @@ from likes_parser import LikesParser
 from moviesParser import MoviesParser
 from graph import Graph
 from entity_index import ChannelIndex, Channels
+from recommend import Recommender, PotentialMovie
 
 def creatingTrainingData(likesMap):
     #print likesMap
@@ -28,10 +29,19 @@ def main(likesJson, moviesJson):
     directorsCount = len(moviesParser.dictDirector)
     genreCount = len(moviesParser.dictGenre)
     print("%d,%d,%d,%d" % (userCount, actorsCount, directorsCount, genreCount))
-    # graph = Graph(userCount, actorsCount, directorsCount, genreCount)
-    # graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
+    graph = Graph(userCount, actorsCount, directorsCount, genreCount)
+    graph.calculateUserAffinity(moviesParser.dictDirector, moviesParser.dictActor, moviesParser.dictGenre, likesMap)
+    graph.calculateAffinityBetweenEntities()
+    graph.calculateSelfAffinity()
 
-
+    reco = Recommender(graph)
+    movies = reco.recommend(likesParser.model, moviesParser, 0)
+    print(movies)
+    print("Recommendations: ")
+    for m in movies:
+        movieObj = moviesParser.movies[m.movie]
+        movieName = movieObj['name']
+        print(movieName)
 
 if __name__ == "__main__":
-    main('json/likes.json', 'json/movies.json')
+    main('json/test/likes.json', 'json/test/movies.json')

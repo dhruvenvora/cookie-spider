@@ -21,25 +21,26 @@ def main(likesJson, moviesJson):
     from operator import itemgetter
     sortedHisto = sorted(histo.items(), key=itemgetter(1))
     sortedHisto.reverse()
-    selectedUsers = None
+
+    newChannelIndex = ChannelIndex(Channels.CHANNELS)
+    newLikesParser = LikesParser(newChannelIndex, likeThreshold=3) #out of 5
+    newLikesParser._model = {} # userID: ([watched movieID], [liked movieID])
+    newLikesParser._userMoviesDict = {} # userID: [movieObject]
+
+    newMoviesParser = MoviesParser(newChannelIndex)
+
     idx = 0
     userCount = 3
-    while(True and idx < len(sortedHisto)):
+    while(idx < userCount):
         (selectedUser, count) = sortedHisto[idx]
         if count <= WATCH_THRESHOLD:
-            break
-        idx += 1
+            watched = likesMap[selectedUser][0]
+            idx += 1
+            userID = channelIndex.getEntityByIndex(Channels.USER, selectedUser)
+            newLikesParser._model[newSelectedUser] = likesMap[selectedUser] # userID: ([watched movieID], [liked movieID])
+            newLikesParser._userMoviesDict = {selectedUser: likesParser._userMoviesDict[selectedUser]} # userID: [movieObject]
+            newLikesParser._indexProvider = likesParser._indexProvider
 
-
-    watched = likesMap[selectedUser][0]
-
-    newLikesParser = LikesParser(channelIndex, likeThreshold=3) #out of 5
-    newLikesParser._likeThreshold = likesParser._likeThreshold
-    newLikesParser._model = {selectedUser: likesMap[selectedUser]} # userID: ([watched movieID], [liked movieID])
-    newLikesParser._userMoviesDict = {selectedUser: likesParser._userMoviesDict[selectedUser]} # userID: [movieObject]
-    newLikesParser._indexProvider = likesParser._indexProvider
-
-    newMoviesParser = MoviesParser(channelIndex)
     newMoviesParser.dictDirector = {} # {director : [movieID]}
     newMoviesParser.dictActor = {} # {actor : [movieID]}
     newMoviesParser.dictGenre = {} # {genre : [movieID]}
