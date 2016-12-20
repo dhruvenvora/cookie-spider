@@ -128,5 +128,5 @@ def main(likesJson, moviesJson):
 
 
 if __name__ == "__main__":
-    main('json/test/likes.json', 'json/test/movies.json')    
+    #main('json/test/likes.json', 'json/test/movies.json')    
     main('json/likes.json', 'json/movies.json')

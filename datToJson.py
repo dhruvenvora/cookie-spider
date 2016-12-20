@@ -85,9 +85,9 @@ def dataFromFiles(heading_mov, dataNumpy_mov, heading_act, dataNumpy_act, headin
 if __name__=="__main__":
     print "Reading the data...\n"
     head_mov, data_mov = read_data('data/movies.dat')
-    head_act, data_act = read_data('data/movie_actors.dat')
+    head_act, data_act = read_data('data/ma.dat')
     head_dir, data_dir = read_data('data/movie_directors.dat')
     head_gen, data_gen = read_data('data/movie_genres.dat')
-    head_rat, data_rat = read_data('data/user_ratedmovies.dat')
+    head_rat, data_rat = read_data('data/ur.dat')
     
     dataFromFiles(head_mov, data_mov, head_act, data_act, head_dir, data_dir, head_gen, data_gen, head_rat, data_rat)
